@@ -26,7 +26,21 @@ use App\Http\Controllers\AuthController;
 //     return $request->user();
 // });
 
-Route::prefix('auth')->group(function(){
-    Route::post('/login',[AuthController::class,'login']);
-    Route::post('/signup',[AuthController::class,'signup']);
-});
+
+    Route::namespace('Controllers')->group(function(){
+        Route::prefix('auth')->group(function(){
+            Route::post('/login',[AuthController::class,'login']);
+            Route::post('/signup',[AuthController::class,'signup']);
+        });
+
+
+        Route::group(['middleware'=>'auth:api'],
+            function(){
+            Route::get('/index',[AuthController::class,'index']);
+            Route::post('/logout',[AuthController::class,'logout']);
+        });
+    });
+    
+    
+
+     
